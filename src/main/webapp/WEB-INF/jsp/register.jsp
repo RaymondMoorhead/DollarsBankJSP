@@ -36,7 +36,7 @@
  			 <tr>
  				<td>Contact Number:</td>
     			<td>
-      				<input type = "tel" name = "contactNumber" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+      				<input type = "tel" name = "contactNumber" placeholder="(012)-345-6789" required>
    				</td>
  			 </tr>
  			 <tr>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dollarsbank.webatm.model.Account;
 import com.dollarsbank.webatm.service.AccountService;
+import com.dollarsbank.webatm.utility.TransactionUtility;
 
 @Controller
 public class RegisterController {
@@ -40,9 +41,17 @@ public class RegisterController {
 														@RequestParam String name,
 														@RequestParam String address,
 														@RequestParam String contactNumber,
-														@RequestParam long balance){
+														@RequestParam String balance){
 		
-		Account account = service.createAccount(userId, password, name, address, contactNumber, balance);
+		long trueBalance;
+		try {
+			trueBalance = TransactionUtility.parseAmount(balance);
+		} catch(Exception e) {
+			model.put("errorMessage", "Invalid balance amount");
+			return "register";
+		}
+		
+		Account account = service.createAccount(userId, password, name, address, contactNumber, trueBalance);
 		
 		if (account == null) {
 			model.put("errorMessage", service.getError());

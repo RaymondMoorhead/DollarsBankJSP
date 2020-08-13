@@ -6,20 +6,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.stereotype.Component;
 
 import com.dollarsbank.webatm.security.Encrypt;
 import com.dollarsbank.webatm.utility.TransactionUtility;
 
-
+@Component
 @Entity
-@Table(name = "user")
+@Table(name = "account")
 public class Account {
 
+//	@Id
+//	@GeneratedValue(strategy= GenerationType.AUTO)
+//	private int id;
+//	@Column
 	@Id
-	private String userId;
+	@Column//(name="account_id", nullable = false, unique = true)
+	private String accountId;
 	@Column
 	private String password;
 	
@@ -27,11 +37,12 @@ public class Account {
 	private String name;
 	@Column
 	private String address;
-	@Column
+	@Column//(name="contact_number", nullable = false, unique = true)
 	private String contactNumber;
 	@Column
 	private long balance = 0;
 	@Column
+	@ElementCollection(targetClass=String.class)
 	private List<String> transactions;
 
 	// used in phone number validation
@@ -80,7 +91,7 @@ public class Account {
 	
 	// empties the contents of all variables for security purposes
 	public void clear() {
-		userId 			= "Account.clear() called";
+		accountId 			= "Account.clear() called";
 		password 		= "Account.clear() called";
 		name 			= "Account.clear() called";
 		address 		= "Account.clear() called";
@@ -90,7 +101,7 @@ public class Account {
 	}
 	
 	public void copy(Account account) {
-		userId = account.userId;
+		accountId = account.accountId;
 		password = account.password;
 		name = account.name;
 		address = account.address;
@@ -108,7 +119,7 @@ public class Account {
 	}
 	
 	public String generatePassword(String password) {
-		return generatePassword(password, userId);
+		return generatePassword(accountId, password);
 	}
 	
 	public void addAmount(long amount, String message) {
@@ -136,7 +147,7 @@ public class Account {
 		if(!validPhone(contactNumber))
 			throw new RuntimeException("Invalid contact number supplied to Account constructor");
 		
-		this.userId = userId;
+		this.accountId = userId;
 		this.password = password;
 		this.name = name;
 		this.address = address;
@@ -154,18 +165,26 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return "Account [userId=" + userId + ", password=" + password + ", name=" + name + ", address=" + address
+		return "Account [userId=" + accountId + ", password=" + password + ", name=" + name + ", address=" + address
 				+ ", contactNumber=" + contactNumber + ", balance=" + balance + ", transactions=" + transactions + "]";
 	}
 	
 	// GETTERS AND SETTERS
+	
+//	public int getId() {
+//		return id;
+//	}
+//	
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 
-	public String getUserId() {
-		return userId;
+	public String getAccountId() {
+		return accountId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setAccountId(String userId) {
+		this.accountId = userId;
 	}
 	
 	public String getPassword() {

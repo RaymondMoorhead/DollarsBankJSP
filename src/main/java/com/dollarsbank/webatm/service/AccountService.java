@@ -33,13 +33,13 @@ public class AccountService {
 	
 	// error is not used here since for security purposes we don't want
 	// to let someone know why it failed, by user existence or password
-	public boolean validateAccount(String userId, String password) {
- 		return getAccount(userId, password) != null;
+	public boolean validateAccount(String accountId, String password) {
+ 		return getAccount(accountId, password) != null;
 	}
 	
-	public Account createAccount(String userId, String password, String name, String address, String contactNumber, long balance) {
+	public Account createAccount(String accountId, String password, String name, String address, String contactNumber, long balance) {
 		// check for existing user
-		if(repository.findByUserId(userId) != null) {
+		if(repository.findByAccountId(accountId) != null) {
 			error = "Username already exists";
 			return null;
 		}
@@ -52,7 +52,7 @@ public class AccountService {
 		
 		Account account = new Account();
 		account.setName(name);
-		account.setUserId(userId);
+		account.setAccountId(accountId);
 		account.setNewPassword(password); // encrypts the password
 		account.setAddress(address);
 		account.setContactNumber(contactNumber);
@@ -61,7 +61,7 @@ public class AccountService {
 		return account;
 	}
 	
-	public Account getAccount(String userId, String password) {
-		return repository.findByUserIdAndPassword(userId, Account.generatePassword(userId, password));
+	public Account getAccount(String accountId, String password) {
+		return repository.findByAccountIdAndPassword(accountId, Account.generatePassword(accountId, password));
 	}
 }

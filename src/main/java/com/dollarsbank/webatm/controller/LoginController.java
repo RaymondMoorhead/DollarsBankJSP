@@ -28,7 +28,7 @@ public class LoginController {
 	public String showLoginPage(ModelMap model){
 		model.put("maxUserIdLength", service.maxUserIdLength);
 		model.put("maxPasswordLength", service.maxPasswordLength);
-		model.put("highestMaxLength", service.highestMaxLength);
+		model.put("highestMaxLength", Math.max(service.maxUserIdLength, service.maxPasswordLength));
 		curAccount.clear();
 		return "login";
 	}
@@ -41,13 +41,12 @@ public class LoginController {
 		if (account == null) {
 			System.out.println("Login failed");
 			model.put("errorMessage", "Invalid Credentials");
-			return new ModelAndView("redirect:/login");
+			curAccount.clear();
+			return new ModelAndView("login");
 		}
 		curAccount.copy(account);
 		
 		System.out.println("Login Succeeded, account is: " + account.toString());
-		
-		//return "list-user-characters";
 		return new ModelAndView("redirect:/main-account-page");
 	}
 }

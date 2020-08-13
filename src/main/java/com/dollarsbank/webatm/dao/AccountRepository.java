@@ -8,6 +8,6 @@ import com.dollarsbank.webatm.model.Account;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, String>{
 
-	Account findByUserId(String userId);
-	Account findByUserIdAndPassword(String userId, String password);
+	Account findByAccountId(String userId);
+	Account findByAccountIdAndPassword(String userId, String password);
 }

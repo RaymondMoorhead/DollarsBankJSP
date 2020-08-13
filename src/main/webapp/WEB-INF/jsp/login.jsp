@@ -12,7 +12,7 @@
   			<tr>
     			<td>UserId:</td>
    				<td>
-      				<input type = "text" name = "name" maxlength="${maxUserIdLength}" size = "${highestMaxLength}">
+      				<input type = "text" name = "userId" maxlength="${maxUserIdLength}" size = "${highestMaxLength}">
     			</td>
   			</tr>
  			 <tr>
