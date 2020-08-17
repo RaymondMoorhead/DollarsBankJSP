@@ -23,13 +23,12 @@ import com.dollarsbank.webatm.utility.TransactionUtility;
 @Table(name = "account")
 public class Account {
 
-//	@Id
-//	@GeneratedValue(strategy= GenerationType.AUTO)
-//	private int id;
-//	@Column
 	@Id
-	@Column//(name="account_id", nullable = false, unique = true)
-	private String accountId;
+	@GeneratedValue(strategy= GenerationType.AUTO)
+	@Column
+	private long id;
+	@Column
+	private String username;
 	@Column
 	private String password;
 	
@@ -91,7 +90,8 @@ public class Account {
 	
 	// empties the contents of all variables for security purposes
 	public void clear() {
-		accountId 			= "Account.clear() called";
+		id 				= -1;
+		username		= "Account.clear() called";
 		password 		= "Account.clear() called";
 		name 			= "Account.clear() called";
 		address 		= "Account.clear() called";
@@ -101,8 +101,9 @@ public class Account {
 	}
 	
 	public void copy(Account account) {
-		accountId = account.accountId;
+		id = account.id;
 		password = account.password;
+		username = account.username;
 		name = account.name;
 		address = account.address;
 		contactNumber = account.contactNumber;
@@ -119,7 +120,7 @@ public class Account {
 	}
 	
 	public String generatePassword(String password) {
-		return generatePassword(accountId, password);
+		return generatePassword(username, password);
 	}
 	
 	public void addAmount(long amount, String message) {
@@ -141,13 +142,14 @@ public class Account {
 	
 	// CONSTRUCTORS
 	
-	public Account(String userId, String password, String name, String address, String contactNumber, long balance, List<String> transactions) {
+	public Account(long id, String username, String password, String name, String address, String contactNumber, long balance, List<String> transactions) {
 		super();
 		
 		if(!validPhone(contactNumber))
 			throw new RuntimeException("Invalid contact number supplied to Account constructor");
 		
-		this.accountId = userId;
+		this.id = id;
+		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.address = address;
@@ -165,26 +167,27 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return "Account [userId=" + accountId + ", password=" + password + ", name=" + name + ", address=" + address
-				+ ", contactNumber=" + contactNumber + ", balance=" + balance + ", transactions=" + transactions + "]";
+		return "Account [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
+				+ ", address=" + address + ", contactNumber=" + contactNumber + ", balance=" + balance
+				+ ", transactions=" + transactions + "]";
 	}
 	
 	// GETTERS AND SETTERS
-	
-//	public int getId() {
-//		return id;
-//	}
-//	
-//	public void setId(int id) {
-//		this.id = id;
-//	}
 
-	public String getAccountId() {
-		return accountId;
+	public long getId() {
+		return id;
 	}
 
-	public void setAccountId(String userId) {
-		this.accountId = userId;
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public String getPassword() {

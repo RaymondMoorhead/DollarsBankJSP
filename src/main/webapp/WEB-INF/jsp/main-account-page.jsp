@@ -17,16 +17,16 @@
 			</tr>
 		</thead>
 		<tr>
-			<td>Deposit</td>
+			<td><a class="button" href="/deposit">Deposit</a></td>
 		</tr>
 		<tr>
-			<td>Withdraw</td>
+			<td><a class="button" href="/withdraw">Withdraw</a></td>
 		</tr>
 		<tr>
-			<td>Transfer</td>
+			<td><a class="button" href="/transfer">Transfer</a></td>
 		</tr>
 		<tr>
-			<td>View Recent Transactions</td>
+			<td><a class="button" href="/recent-transactions">View Recent Transactions</a></td>
 		</tr>
 	</table>
 	

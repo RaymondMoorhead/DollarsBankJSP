@@ -9,7 +9,10 @@
 <body>
 	<div>
 		<h3>Welcome to Dollars Bank!</h3><br>
-		<a class="button" href = "/login">Logout</a>
+		<a class="button" href = "/logout">Logout</a><br>
+		
+		<font color="red">${errorMessage}</font>
+		<font color="green">${successMessage}</font>
 	</div>
 </body>
 </html>

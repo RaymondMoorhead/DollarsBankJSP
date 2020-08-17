@@ -1,12 +1,10 @@
 <html>
 
 <head>
-<title>Dollars Bank Registration</title>
+<title>Dollars Bank Local Deposit For ${curAccount.name}</title>
 </head>
 
 <body>
-	<font color="red">${errorMessage}</font>
-	
 	<form method = "post">
 		<table border="1">
   			<tr>
@@ -48,8 +46,6 @@
 	</table>
 	<p><input type = "submit" value = "submit" name = "b1"></p>
 	</form>
-	
-	<a href="login">Already have an account? Click Here!</a>
 </body>
 
 </html>

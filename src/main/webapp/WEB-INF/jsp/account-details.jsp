@@ -13,7 +13,7 @@
 	<table border="1">
 		<tr>
 			<td>UserId</td>
-			<td>${curAccount.userId}</td>
+			<td>${curAccount.username}</td>
 		</tr>
 		<tr>
 			<td>Name</td>

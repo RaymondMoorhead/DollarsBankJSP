@@ -10,9 +10,9 @@
 	<form method = "post">
 		<table border="1">
   			<tr>
-    			<td>UserId:</td>
+    			<td>Username:</td>
    				<td>
-      				<input type = "text" name = "userId" maxlength="${maxUserIdLength}" size = "${highestMaxLength}">
+      				<input type = "text" name = "username" maxlength="${maxUsernameLength}" size = "${highestMaxLength}">
     			</td>
   			</tr>
  			 <tr>
