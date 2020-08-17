@@ -36,7 +36,7 @@ public class Account {
 	private String name;
 	@Column
 	private String address;
-	@Column//(name="contact_number", nullable = false, unique = true)
+	@Column
 	private String contactNumber;
 	@Column
 	private long balance = 0;
@@ -123,15 +123,20 @@ public class Account {
 		return generatePassword(username, password);
 	}
 	
-	public void addAmount(long amount, String message) {
-		addTransaction("Added " + TransactionUtility.parseAmount(amount) + " (" + message + ") [" + TransactionUtility.getTime() + "]");
-		
+	public boolean addAmount(long amount, String message) {
+		if(amount < 0)
+			return false;
+		addTransaction(TransactionUtility.parseAmount(amount) + " (" + message + ") [" + TransactionUtility.getTime() + "]");
 		this.balance += amount;
+		return true;
 	}
 	
-	public void subtractAmount(long amount, String message) {
-		addTransaction("Removed " + TransactionUtility.parseAmount(amount) + " (" + message + ") [" + TransactionUtility.getTime() + "]");
+	public boolean subtractAmount(long amount, String message) {
+		if((amount < 0) || (balance - amount < 0))
+			return false;
+		addTransaction("-" + TransactionUtility.parseAmount(amount) + " (" + message + ") [" + TransactionUtility.getTime() + "]");
 		this.balance -= amount;
+		return true;
 	}
 	
 	private void addTransaction(String msg) {

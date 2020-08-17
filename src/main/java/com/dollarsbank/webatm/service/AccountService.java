@@ -65,6 +65,12 @@ public class AccountService {
 		return repository.findByUsernameAndPassword(username, Account.generatePassword(username, password));
 	}
 	
+	// should only be called in transfers and exchanges where
+	// a password is not necessary
+	public Account getAccount(String username) {
+		return repository.findByUsername(username);
+	}
+	
 	public void updateAccount(Account account) {
 		repository.save(account);
 	}

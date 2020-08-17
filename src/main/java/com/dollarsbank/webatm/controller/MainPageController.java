@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.dollarsbank.webatm.model.Account;
 import com.dollarsbank.webatm.service.AccountService;
@@ -18,7 +19,7 @@ import com.dollarsbank.webatm.utility.TransactionUtility;
 public class MainPageController {
 	@Autowired
 	AccountService service;
-	@Autowired
+
     private Account curAccount;
 	
     @ModelAttribute("curUser")
@@ -27,7 +28,7 @@ public class MainPageController {
     }
     
     private void setCurAccount(HttpSession session) {
-    	curAccount.copy((Account) session.getAttribute("curAccount"));
+    	curAccount = (Account) session.getAttribute("curAccount");
     }
     
     private boolean updateBalance(boolean add, String balance, Account account, String message) {
@@ -37,10 +38,14 @@ public class MainPageController {
 		} catch(Exception e) {
 			return false;
 		}
-		if(add)
-			account.addAmount(trueBalance, message);
-		else
-			account.subtractAmount(trueBalance, message);
+		if(add) {
+			if(!account.addAmount(trueBalance, message))
+				return false;
+		}
+		else {
+			if(!account.subtractAmount(trueBalance, message))
+				return false;
+		}
 		service.updateAccount(account);
 		return true;
     }
@@ -64,16 +69,20 @@ public class MainPageController {
 	}
 	
 	@PostMapping(value = "/deposit")
-	public String performDeposit(HttpSession session,
+	public ModelAndView performDeposit(HttpSession session,
 									ModelMap model,
-									@RequestParam String balance){
-		
+									@RequestParam String balance,
+									@RequestParam String memo){
+
 		setCurAccount(session);
-		if(updateBalance(true, balance, curAccount, "Local Deposit"))
+		if(updateBalance(true, balance, curAccount, "Local Deposit" + (memo.isEmpty() ? "" : ": " + memo))) {
 			model.put("successMessage", "Deposit Successful");
-		else
+			return new ModelAndView("main-account-page");
+		}
+		else {
 			model.put("errorMessage", "Invalid balance amount");
-		return "deposit";
+			return new ModelAndView("deposit");
+		}
 	}
 	
 	@GetMapping(value = "/withdraw")
@@ -83,16 +92,20 @@ public class MainPageController {
 	}
 	
 	@PostMapping(value = "/withdraw")
-	public String performWithdraw(HttpSession session,
+	public ModelAndView performWithdraw(HttpSession session,
 									ModelMap model,
-									@RequestParam String balance){
+									@RequestParam String balance,
+									@RequestParam String memo){
 		
 		setCurAccount(session);
-		if(updateBalance(false, balance, curAccount, "Local Withdrawl"))
-			model.put("successMessage", "Withdrawl Successful");
-		else
+		if(updateBalance(false, balance, curAccount, "Local Withdrawal" + (memo.isEmpty() ? "" : ": " + memo))) {
+			model.put("successMessage", "Withdrawal Successful");
+			return new ModelAndView("main-account-page");
+		}
+		else {
 			model.put("errorMessage", "Invalid balance amount");
-		return "withdraw";
+			return new ModelAndView("withdraw");
+		}
 	}
 
 	@GetMapping(value = "/transfer")
@@ -101,9 +114,35 @@ public class MainPageController {
 		return "transfer";
 	}
 	
-	@GetMapping(value = "/recent-transactions")
-	public String showRecentTransactionsPage(HttpSession session){
+	@PostMapping(value = "/transfer")
+	public ModelAndView performTransfer(HttpSession session,
+										ModelMap model,
+										@RequestParam String username,
+										@RequestParam String balance,
+										@RequestParam String memo){
 		setCurAccount(session);
+		Account target = service.getAccount(username);
+		
+		if(target == null) {
+			model.put("errorMessage", "User does not exist");
+			return new ModelAndView("transfer");
+		}
+		
+		if(updateBalance(false, balance, curAccount, "Transfer to " + username + ": " + memo)) {
+			updateBalance(true, balance, target, "Transfer from " + curAccount.getUsername() + (memo.isEmpty() ? "" : ": " + memo));
+			model.put("successMessage", "Transfer Successful");
+			return new ModelAndView("main-account-page");
+		}
+		else {
+			model.put("errorMessage", "Invalid balance amount");
+			return new ModelAndView("transfer");
+		}
+	}
+	
+	@GetMapping(value = "/recent-transactions")
+	public String showRecentTransactionsPage(ModelMap model, HttpSession session){
+		setCurAccount(session);
+		model.put("balance", TransactionUtility.parseAmount(curAccount.getBalance()));
 		return "recent-transactions";
 	}
 }

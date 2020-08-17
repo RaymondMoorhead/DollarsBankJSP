@@ -8,8 +8,8 @@
 
 <body>
 	<%@ include file = "header.jsp"%>
-	
 	<div><a class="button" href="/main-account-page">Return To Main Page</a></div>
+	
 	<table border="1">
 		<tr>
 			<td>UserId</td>
