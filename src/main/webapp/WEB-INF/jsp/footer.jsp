@@ -3,10 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="formats.css">
 <title>Footer</title>
 </head>
+
 <body>
+
+<h5 class="footer">Copyright © Dollars Bank 2020</h5>
 
 </body>
 </html>

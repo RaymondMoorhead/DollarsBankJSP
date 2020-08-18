@@ -62,6 +62,20 @@ public class MainPageController {
 		return "account-details";
 	}
 	
+	@GetMapping(value = "/delete-account")
+	public String deleteAccount(HttpSession session, ModelMap model){
+		setCurAccount(session);
+		String goodbye = "Thank you for banking with us";
+		if(curAccount.getBalance() > 0)
+			goodbye = goodbye +
+						", a check for your remaining balance (" +
+						TransactionUtility.parseAmount(curAccount.getBalance()) +
+						") will be sent to " + curAccount.getAddress();
+		model.put("successMessage", goodbye);
+		service.deleteAccount(curAccount.getUsername(), curAccount.getPassword());
+		return "forward:/logout";
+	}
+	
 	@GetMapping(value = "/deposit")
 	public String showDepositPage(HttpSession session){
 		setCurAccount(session);

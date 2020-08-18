@@ -3,9 +3,9 @@
 <html>
 
 <head>
+<link rel="stylesheet" type="text/css" href="formats.css">
 <title>Dollars Bank ${curAccount.name}'s Details</title>
 </head>
-
 <body>
 	<%@ include file = "header.jsp"%>
 	<div><a class="button" href="/main-account-page">Return To Main Page</a></div>
@@ -26,6 +26,12 @@
 		<tr>
 			<td>Contact Number</td>
 			<td>${curAccount.contactNumber}</td>
+		</tr>
+	</table>
+	
+	<table border="1">
+		<tr>
+			<td><a class="button" href="/delete-account" style="color: red">Delete Account</a></td>
 		</tr>
 	</table>
 	

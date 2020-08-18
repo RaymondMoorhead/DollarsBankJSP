@@ -1,6 +1,7 @@
 <html>
 
 <head>
+<link rel="stylesheet" type="text/css" href="formats.css">
 <title>Dollars Bank Local Withdrawal For ${curAccount.name}</title>
 </head>
 
@@ -13,7 +14,7 @@
   			<tr>
     			<td>Amount:</td>
    				<td>
-      				<input type = "number" name = "balance"size = "30" required>
+      				<input type = "number" name = "balance" size = "30" step='0.01' value='0.00' placeholder='0.00' required>
     			</td>
   			</tr>
  			 <tr>

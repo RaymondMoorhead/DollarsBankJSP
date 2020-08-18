@@ -3,6 +3,7 @@
 <html>
 
 <head>
+<link rel="stylesheet" type="text/css" href="formats.css">
 <title>Dollars Bank ${curAccount.name}'s Page</title>
 </head>
 

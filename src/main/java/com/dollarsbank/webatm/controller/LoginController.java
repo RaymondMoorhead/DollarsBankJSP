@@ -23,7 +23,16 @@ public class LoginController {
 	@GetMapping(value = "/logout")
 	public String logout(HttpSession session){
 		session.removeAttribute("curAccount");
-		return "redirect:/login";
+		return "forward:/login";
+	}
+	
+	@PostMapping(value = "/logout")
+	public ModelAndView callLoginPost(ModelMap model, HttpSession session,
+											@RequestParam String username,
+											@RequestParam String password){
+		// logout has to forward to keep the model data, but doing so make logging
+		// in after logging out call POST for logout, so this is a necessary band-aid
+		return showMainAccountPage(model, session, username, password);
 	}
 	
 	@GetMapping(value = "/login")

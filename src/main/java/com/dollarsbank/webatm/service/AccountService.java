@@ -74,4 +74,8 @@ public class AccountService {
 	public void updateAccount(Account account) {
 		repository.save(account);
 	}
+	
+	public void deleteAccount(String username, String password) {
+		repository.deleteByUsernameAndPassword(username, password);
+	}
 }

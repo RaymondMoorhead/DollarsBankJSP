@@ -41,8 +41,8 @@ public class Account {
 	@Column
 	private long balance = 0;
 	@Column
-	@ElementCollection(targetClass=String.class)
-	private List<String> transactions;
+	@ElementCollection(targetClass=Transaction.class)
+	private List<Transaction> transactions;
 
 	// used in phone number validation
 	private static final String validPhonePatterns;
@@ -126,7 +126,7 @@ public class Account {
 	public boolean addAmount(long amount, String message) {
 		if(amount < 0)
 			return false;
-		addTransaction(TransactionUtility.parseAmount(amount) + " (" + message + ") [" + TransactionUtility.getTime() + "]");
+		addTransaction(amount, message, TransactionUtility.getTime());
 		this.balance += amount;
 		return true;
 	}
@@ -134,20 +134,20 @@ public class Account {
 	public boolean subtractAmount(long amount, String message) {
 		if((amount < 0) || (balance - amount < 0))
 			return false;
-		addTransaction("-" + TransactionUtility.parseAmount(amount) + " (" + message + ") [" + TransactionUtility.getTime() + "]");
+		addTransaction(-amount, message, TransactionUtility.getTime());
 		this.balance -= amount;
 		return true;
 	}
 	
-	private void addTransaction(String msg) {
+	private void addTransaction(long amount, String msg, String date) {
 		if(transactions.size() == 5)
 			transactions.remove(0);
-		transactions.add(msg);
+		transactions.add(new Transaction(amount, msg, date));
 	}
 	
 	// CONSTRUCTORS
 	
-	public Account(long id, String username, String password, String name, String address, String contactNumber, long balance, List<String> transactions) {
+	public Account(long id, String username, String password, String name, String address, String contactNumber, long balance, List<Transaction> transactions) {
 		super();
 		
 		if(!validPhone(contactNumber))
@@ -165,7 +165,7 @@ public class Account {
 	
 	public Account() {
 		super();
-		transactions = new ArrayList<String>();
+		transactions = new ArrayList<Transaction>();
 	}
 	
 	// STANDARD PUBLIC METHODS
@@ -235,11 +235,11 @@ public class Account {
 		this.balance = balance;
 	}
 	
-	public List<String> getTransactions() {
+	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 	
-	public void setTransactions(List<String> transactions) {
+	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
 	}
 	

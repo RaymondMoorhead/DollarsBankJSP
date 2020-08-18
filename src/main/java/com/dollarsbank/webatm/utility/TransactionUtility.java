@@ -36,12 +36,17 @@ public class TransactionUtility {
 	
 	public static String parseAmount(long num) {
 
-		String result = Long.toString(num);
+		String result = Long.toString(Math.abs(num));
+		
 		if(result.length() <= 2)
-			return "0." + result;
-		else {
-			return result.substring(0, result.length() - 2) + "." + result.substring(result.length() - 2);
-		}
+			result = "0." + result;
+		else
+			result = result.substring(0, result.length() - 2) + "." + result.substring(result.length() - 2);
+		
+		if(num < 0)
+			return "-" + result;
+		else
+			return result;
 	}
 	
 	public static String getTime() {

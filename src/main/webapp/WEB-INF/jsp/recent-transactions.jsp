@@ -3,6 +3,7 @@
 <html>
 
 <head>
+<link rel="stylesheet" type="text/css" href="formats.css">
 <title>Dollars Bank ${curAccount.name}'s Recent Transactions</title>
 </head>
 
@@ -13,12 +14,14 @@
 	<table border="1">
 		<c:forEach items="${curAccount.transactions}" var="transaction">
 			<tr>
-				<td>${transaction}</td>
+				<td>${transaction.amountAsString}</td>
+				<td>${transaction.message}</td>
+				<td>${transaction.date}</td>
 			</tr>
 		</c:forEach>
 	</table><br>
 	
-	<table border="1">
+	<table border="1" class="center">
 		<tr>
 			<td>Current Balance:</td>
 			<td>${balance}</td>
